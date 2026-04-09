@@ -116,3 +116,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+LOGIN_REDIRECT_URL = '/'  # ログイン成功後、トップページ（記事一覧など）へ
+LOGOUT_REDIRECT_URL = '/' # ログアウト後、トップページへ
