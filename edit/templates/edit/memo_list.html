@@ -1,0 +1,25 @@
+{% extends 'edit/base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>メモ一覧</h1>
+    <a href="{% url 'memo_create' %}" class="btn btn-primary">＋ 新しいメモ</a>
+</div>
+
+<div class="row">
+    {% for memo in memos %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{ memo.title }}</h5>
+                <p class="card-text text-secondary">{{ memo.content|truncatechars:50 }}</p>
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'memo_edit' pk=memo.pk %}" class="btn btn-sm btn-outline-secondary me-2">編集</a>
+                    <a href="{% url 'memo_delete' pk=memo.pk %}" class="btn btn-sm btn-outline-danger">削除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
