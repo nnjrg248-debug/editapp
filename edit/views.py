@@ -3,28 +3,31 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Memo,Post
 from .forms import MemoForm#フォーム使ってる場合
 from django.contrib.auth.mixins import LoginRequiredMixin#ログインしてないアクセスはsettingsのURLに戻る設定
-from django.views.generic import ListView,CreateView,UpdateViwe,DeteteView
+from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView,CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy#管廊後の移動先指定につかう
+from django.contrib.auth.decorators import login_required#関数ベースのログイン制限
 
 #1.記事一覧（誰でも見れる）
 class PostListView(ListView):
-    modeo=Post
-    template_name='post_list.html'
+    model = Memo
+    template_name='edit/post_list.html'
 
 #2記事作成（ログインが必要）
 class PostCreateView(LoginRequiredMixin,CreateView):
     model=Post
     fields=['title','']
     template_name='post_form.html'
-    success_url=reverse_lazy('post_list.html')
+    success_url=reverse_lazy('post_list')
 
 #3.記事編集(ログインが必要)
 class PostUpdateView(LoginRequiredMixin,UpdateView):
     model=Post
     fields=['title','content']
     template_name='post_form.html'
-    success_url=reverse_lazy('post_list.html')
+    success_url=reverse_lazy('post_list')
 
+@login_required # これ追加で未ログイン時ここに飛ばされない
 def memo_list(request):
     memos=Memo.objects.all().order_by('-created_at')
     return render(request,'edit/memo_list.html',{'memos':memos})

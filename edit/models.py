@@ -12,3 +12,7 @@ class Memo(models.Model):
         
     def __str__(self):
         return self.title
+    
+class Post(models.Model):  # ここが Post ではなく Article などの場合
+    title = models.CharField(max_length=200)
+    content = models.TextField()

@@ -55,7 +55,8 @@ ROOT_URLCONF = 'editapp.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],  # ← ここが [BASE_DIR / 'templates'] 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -117,5 +118,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-LOGIN_REDIRECT_URL = '/'  # ログイン成功後、トップページ（記事一覧など）へ
-LOGOUT_REDIRECT_URL = '/' # ログアウト後、トップページへ
+LOGIN_URL = 'login'#未ログイン時飛ばされるところ
+LOGIN_REDIRECT_URL = '/'  # ログインが成功した後に自動で飛ばす先（TOPページなど）
+
+#LOGOUT_REDIRECT_URL = 'login'#ログアウトした後に飛ばす先（ログイン画面に戻すのが一般的）
+LOGIN_REDIRECT_URL = 'post_list' # ここが 'login' になっていると無限ループします
