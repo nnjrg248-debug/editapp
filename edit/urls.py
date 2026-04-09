@@ -2,6 +2,8 @@
 from django.urls import path,include
 from .import views
 from .views import PostListView,PostCreateView,PostUpdateView#作ったViweをインポート
+from django.contrib.auth import views as auth_views
+
 '''
 
 from django.urls import path,include from .import viewsのちがいで
@@ -11,7 +13,6 @@ from .import viewsはfrom.（ディレクトリ名)fromファイル名だが
 「どこから」「何を」インポートするかという点で決定的な違いあり
 from django.urls import path, include: Djangoの外部ライブラリから、機能（関数）を取り込む。
 from . import views: 現在と同じフォルダ内にある views.py を、モジュール全体として取り込む
-
 
 '''
 urlpatterns=[
@@ -31,4 +32,5 @@ urlpatterns=[
     #↑第一引数のpkがviewsのmemo_editのurlでの表示のみで第2引数が指定される
     #またmemo_form.htmlでmemo_editの第2引数として指定されている
     path('delete/<int:pk>',views.memo_delete,name='memo_delete'),
+  # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
 ]
