@@ -11,13 +11,25 @@
     <div class="col-md-4 mb-3">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h5 class="card-title">{{ memo.title }}</h5>
+                <h5 class="card-title d-flex justify-content-between align-items-center">
+                    {{ memo.title }}
+                    <span class="badge bg-secondary" style="font-size: 0.7rem;">
+                        {{ memo.created_at|date:"n/j" }}
+                    </span>
+                </h5>
                 <p class="card-text text-secondary">{{ memo.content|truncatechars:50 }}</p>
                 <div class="d-flex justify-content-end">
                     <a href="{% url 'memo_edit' pk=memo.pk %}" class="btn btn-sm btn-outline-secondary me-2">編集</a>
                     <a href="{% url 'memo_delete' pk=memo.pk %}" class="btn btn-sm btn-outline-danger">削除</a>
                 </div>
             </div>
+        </div>
+    </div>
+     {% empty %}
+    <!-- メモが1件もない場合に表示されるエリア -->
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            メモがまだありません。「新しいメモ」から作成してみましょう！
         </div>
     </div>
     {% endfor %}
