@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
+import os
+from dotenv import load_dotenv
 
 from pathlib import Path
 
@@ -128,5 +130,5 @@ LOGIN_REDIRECT_URL = 'post_list' # ここが 'login' になっていると無限
 #正しくは、「ログアウトボタン（POST送信）を押してログアウト処理が終わった瞬間に、自動で『ログイン画面』へ飛ばしてくれる設定」
 #{%url 'login'%}のボタン押すとログアウトになるわけではない
 
-
-OPENAI_API_KEY = "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"
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
