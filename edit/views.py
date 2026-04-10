@@ -71,31 +71,25 @@ def memo_delete(request,pk):
 #POST（ボタン押下）でないときは、確認画面(html)を出すだけ
     return render(request,'edit/memo_confirm_delete.html',{'memo':memo})
 
-from django.http import JsonResponse
-from openai import OpenAI
-from django.conf import settings
-
 def ai_generate(request):
-    user_input = request.GET.get('text', '')
-    
-    # settings.py から APIキーを取得
-    client = OpenAI(api_key=settings.OPENAI_API_KEY)
-    
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",  # ←ここを確実に存在する gpt-4o-mini にする
-            messages=[
-                {"role": "system", "content": "あなたは優秀なライターです。"},
-                {"role": "user", "content": f"{user_input} の続きを書いてください。"}
-            ],
-            max_tokens=200
-        )
-        ai_text =  response.choices[0].message.content
-        return JsonResponse({'result': ai_text})
+        #ユーザが入力した「タイトル」、「冒頭の分を取得」
+        user_input=request.GET.get('text','')
 
+        client = OpenAI(api_key=settings.OPENAI_API_KEY)
+
+        #AIにリクエスト送る
+        response=client.chat.completions.create(
+            model="gpt-4o-mini", # 安くて速いモデル。gpt-5-nanoより安定
+            messagaes=[
+                {"role":"system","content":"あなたは優秀なライターです。続きを執筆してください。"},
+                {"role":"user","content":f"以下の文章の続きを書いてください{user_input}"},
+            ],
+            maz_tokens=200#1ドル予算なので1度に使いすぎぬよう短めに制限
+        )   
+        ai_text=response.choices[0].message.content
+        return JsonResponse({'result':ai_text})
     except Exception as e:
-        # ここでエラーの内容をターミナル（黒い画面）に表示させる！
-        print("---------- AI生成エラー内容 ----------")
-        print(e)
-        print("-------------------------------------")
-        return JsonResponse({'result': None, 'error': str(e)})
+            # ターミナルに具体的なエラー内容を表示させる
+            print(f"エラーが発生しました: {e}")
+            return JsonResponse({'error': str(e)}, status=500)
