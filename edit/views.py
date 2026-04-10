@@ -81,11 +81,11 @@ def ai_generate(request):
         #AIにリクエスト送る
         response=client.chat.completions.create(
             model="gpt-4o-mini", # 安くて速いモデル。gpt-5-nanoより安定
-            messagaes=[
+            messages=[
                 {"role":"system","content":"あなたは優秀なライターです。続きを執筆してください。"},
                 {"role":"user","content":f"以下の文章の続きを書いてください{user_input}"},
             ],
-            maz_tokens=200#1ドル予算なので1度に使いすぎぬよう短めに制限
+            max_tokens=200#1ドル予算なので1度に使いすぎぬよう短めに制限
         )   
         ai_text=response.choices[0].message.content
         return JsonResponse({'result':ai_text})
