@@ -34,6 +34,10 @@ urlpatterns=[
     path('delete/<int:pk>',views.memo_delete,name='memo_delete'),
   # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('ai-generate/',views.ai_generate,name='ai_generate'),
+
+
     path('test-send/', views.test_email_view),
+    path('test/', views.test_email_view),
+    path('inbound/', views.handle_inbound_email),
     
 ]

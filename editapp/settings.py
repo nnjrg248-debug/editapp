@@ -133,18 +133,19 @@ LOGIN_REDIRECT_URL = 'post_list' # ここが 'login' になっていると無限
 #{%url 'login'%}のボタン押すとログアウトになるわけではない
 
 load_dotenv()
+
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = '://gmail.com'
+EMAIL_HOST = 'smtp.gmail.com'#'://gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # 送信に使用するGmailアカウント
-EMAIL_HOST_USER = 'あなたのメールアドレス@gmail.com'
+EMAIL_HOST_USER = 'nnjrg248@gmail.com'
 
 # Googleアカウントで発行した「アプリパスワード」を入力します（通常のパスワードではありません）
-EMAIL_HOST_PASSWORD = 'ここに16桁のアプリパスワードを入力'
+EMAIL_HOST_PASSWORD = 'nrfl lhcu dhyy nnke'
 
 # デフォルトの送信元アドレス（任意）
-DEFAULT_FROM_EMAIL = 'admin@1q1q.xyz'
+DEFAULT_FROM_EMAIL = 'from20260414@1q1q.xyz'
