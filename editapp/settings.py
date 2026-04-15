@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
 from dotenv import load_dotenv
-
+#　pip install python-dotenv　として波線を消す
+#これで消えぬ時は　Ctrl + Shift + P　→「Python: Select Interpreter」を選択
+#     →   python-dotenv をインストールした仮想環境（venvなど）を1つ1つ消えるまで選択
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +29,7 @@ SECRET_KEY = 'django-insecure-u_i22yuz$zq#xkq5*n1$1-ftc5wm7#9-$9kz6elhu&7z)1tjt1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -132,3 +134,17 @@ LOGIN_REDIRECT_URL = 'post_list' # ここが 'login' になっていると無限
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '://gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# 送信に使用するGmailアカウント
+EMAIL_HOST_USER = 'あなたのメールアドレス@gmail.com'
+
+# Googleアカウントで発行した「アプリパスワード」を入力します（通常のパスワードではありません）
+EMAIL_HOST_PASSWORD = 'ここに16桁のアプリパスワードを入力'
+
+# デフォルトの送信元アドレス（任意）
+DEFAULT_FROM_EMAIL = 'admin@1q1q.xyz'

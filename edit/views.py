@@ -12,6 +12,31 @@ from django.views.generic import ListView,CreateView,UpdateView,DeleteView
 from django.urls import reverse_lazy#管廊後の移動先指定につかう
 from django.contrib.auth.decorators import login_required#関数ベースのログイン制限
 
+from django.core.mail import send_mail
+from django.http import HttpResponse
+import logging
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.core.mail import send_mail
+
+
+#上記関数のインポートで波線立ってるので以下のように対処
+#ターミナルで pip show django
+#Ctrl + Shift + P (Macは Cmd + Shift + P) を押す。
+#「Python: Select Interpreter」 と入力して選択。
+#「インタープリターパスを入力」　を選択
+#リストの中から 「('venv': venv)」 
+#とするのは仮想環境が別のフォルダに作ってある場合でこのPCではまだ作ってないので以下のようにする
+#python -m venv venv
+#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Proce#s
+#venv\Scripts\activate
+#「pip install django openai」
+#Ctrl + Shift + P (Macは Cmd + Shift + P) を押す。
+#「Python: Select Interpreter」 と入力して選択。
+#リストの中から 「('venv': venv)」 など、Djangoをインストールした仮想環境のパスが含まれるものを選択
+
+
+
 #1.記事一覧（誰でも見れる）
 class PostListView(ListView):
     model = Memo
@@ -93,3 +118,50 @@ def ai_generate(request):
             # ターミナルに具体的なエラー内容を表示させる
             print(f"エラーが発生しました: {e}")
             return JsonResponse({'error': str(e)}, status=500)
+    
+
+
+
+def test_email_view(request):
+    send_mail(
+        'AI料理アプリ（テスト）',
+        '受け取りました。これから解析します！',
+        'from@example.com',
+        ['あなたのメールアドレス@gmail.com'],
+        fail_silently=False,
+    )
+    return HttpResponse("テストメールを送信しました。")
+
+
+
+
+
+logger = logging.getLogger(__name__) #グローバル変数（外部変数）のようなもの
+
+@csrf_exempt  # SendGridからの外部アクセスを許可
+def handle_inbound_email(request):
+    if request.method == 'POST':
+        # 1. データの抽出
+        sender = request.POST.get('from')    # 送信者のメールアドレス
+        subject = request.POST.get('subject') # メールの件名
+        body = request.POST.get('text')      # メールの本文
+       
+        # 添付ファイル（写真）がある場合
+        if request.FILES:
+            for file_name in request.FILES:
+                photo = request.FILES[file_name]
+                # ここで写真を保存したり、AI（Gemini等）に渡したりする
+                logger.info(f"写真を受信しました: {photo.name}")
+
+        # 2. とりあえずの自動返信（土台作り）
+        send_mail(
+            f"Re: {subject}",
+            "メールを受け取りました！現在AIが料理を考えています...",
+            'admin@1q1q.xyz',  # 送信元（自分のドメイン）
+            [sender],         # 送ってきた相手へ返信
+            fail_silently=False,
+        )
+
+        return HttpResponse(status=200) # SendGridに成功を伝える
+   
+    return HttpResponse(status=405)
