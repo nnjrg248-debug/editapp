@@ -5,7 +5,7 @@
     <h1>メモ一覧</h1>
     <a href="{% url 'memo_create' %}" class="btn btn-primary">＋ 新しいメモ</a>
 </div>
-
+<hr>
 <div class="row">
     {% for memo in memos %}
     <div class="col-md-4 mb-3">
@@ -25,6 +25,7 @@
             </div>
         </div>
     </div>
+    <hr class="my-2 text-muted">
      {% empty %}
     <!-- メモが1件もない場合に表示されるエリア -->
     <div class="col-12">
